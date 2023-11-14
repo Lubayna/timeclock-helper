@@ -1,0 +1,33 @@
+name: Slack Bot Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      SLACK_SIGNING_SECRET: ${{ secrets.SLACK_SIGNING_SECRET }}
+      SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
+      SLACK_USER_ID: ${{ secrets.SLACK_USER_ID }}
+      JOBCON_URL: ${{ secrets.JOBCON_URL }}
+      JOBCON_ID: ${{ secrets.JOBCON_ID }}
+      JOBCON_PASSWORD: ${{ secrets.JOBCON_PASSWORD }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Python script
+        run: python3 slack_timeclock_auto.py
