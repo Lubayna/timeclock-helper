@@ -43,8 +43,10 @@ jobs:
         run: sleep 10
 
       - name: Extract Ngrok URL
-        run: |
-          echo "Ngrok URL: ${{ secrets.NGROK_URL := $(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url') }}"
+        id: extract_ngrok
+        run: echo "::set-output name=ngrok_url::$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')"
 
       - name: Run Python script
         run: python3 slack_timeclock_auto.py
+          env:
+            NGROK_URL: ${{ steps.extract_ngrok.outputs.ngrok_url }}
