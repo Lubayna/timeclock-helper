@@ -48,5 +48,6 @@ jobs:
 
       - name: Run Python script
         run: python3 slack_timeclock_auto.py
-          env:
-            NGROK_URL: ${{ steps.extract_ngrok.outputs.ngrok_url }}
+        env:
+          NGROK_URL: ${{ steps.extract_ngrok.outputs.ngrok_url }}
+
